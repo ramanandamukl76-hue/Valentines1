@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Subbu 💖</title>
+<style>
+body {
+  margin: 0;
+  background: linear-gradient(to bottom, #ff9aa2, #ffb7c5);
+  font-family: Arial;
+  text-align: center;
+  overflow: hidden;
+  color: white;
+}
+
+#screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 { font-size: 60px; }
+h2 { font-size: 48px; margin: 20px 0; }
+p  { font-size: 30px; }
+
+button {
+  padding: 22px 50px;
+  font-size: 32px;
+  border: none;
+  border-radius: 45px;
+  margin: 15px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+#yes { background: #ff003c; color: white; }
+#no  { background: #333; color: white; }
+
+.bigYes {
+  font-size: 60px;
+  padding: 30px 80px;
+}
+
+.heart, .kiss {
+  position: fixed;
+  bottom: -40px;
+  font-size: 35px;
+  animation: floatUp 8s linear forwards;
+}
+
+@keyframes floatUp {
+  from { transform: translateY(0); opacity: 0; }
+  to   { transform: translateY(-110vh); opacity: 1; }
+}
+</style>
+</head>
+
+<body>
+
+<div id="screen">
+  <h1>Subbu 💕</h1>
+  <h2>Will You Be My Valentine? 🥰</h2>
+  <p>Pookie please say yes 😘</p>
+  <div>
+    <button id="yes">Yes 💖</button>
+    <button id="no">No 😢</button>
+  </div>
+</div>
+
+<!-- MP3 Song -->
+<audio id="song" src="Thangamey.mp3" preload="auto"></audio>
+
+<script>
+const yes = document.getElementById("yes");
+const no = document.getElementById("no");
+const screen = document.getElementById("screen");
+const song = document.getElementById("song");
+
+let scale = 1;
+let tries = 0;
+
+// NO button shrinks and floats
+function moveNo() {
+  tries++;
+  scale -= 0.12;
+  if (scale < 0.2) scale = 0.2;
+  no.style.transform = "scale(" + scale + ")";
+
+  const x = Math.random() * (window.innerWidth - no.offsetWidth);
+  const y = Math.random() * (window.innerHeight - no.offsetHeight);
+  no.style.position = "absolute";
+  no.style.left = x + "px";
+  no.style.top = y + "px";
+
+  if (tries >= 6) {
+    yes.classList.add("bigYes");
+    yes.innerText = "YES 😍💖";
+  }
+}
+
+no.addEventListener("touchstart", moveNo);
+no.addEventListener("mouseover", moveNo);
+
+// YES button clicked
+yes.onclick = () => {
+  if (document.documentElement.requestFullscreen) {
+    document.documentElement.requestFullscreen();
+  }
+
+  // Play the song immediately on first tap
+  song.play().catch(() => {});
+
+  // Delay a tiny bit before changing screen so song plays
+  setTimeout(() => {
+    screen.innerHTML =
+      "<h1 style='font-size:70px'>I Love You Forever ❤️♾️</h1>" +
+      "<p style='font-size:40px'>Muahhhh 😘💋</p>";
+
+    // Start floating hearts and kisses
+    setInterval(createHeart, 300);
+    setInterval(createKiss, 700);
+  }, 200);
+};
+
+// NO still converts to YES
+no.onclick = () => {
+  yes.click();
+}
+
+// Floating hearts
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerHTML = "❤️";
+  heart.style.left = Math.random() * window.innerWidth + "px";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 8000);
+}
+
+// Floating kisses
+function createKiss() {
+  const kiss = document.createElement("div");
+  kiss.className = "kiss";
+  kiss.innerHTML = "💋";
+  kiss.style.left = Math.random() * window.innerWidth + "px";
+  document.body.appendChild(kiss);
+  setTimeout(() => kiss.remove(), 8000);
+}
+</script>
+
+</body>
+</html>
